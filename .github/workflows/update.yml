@@ -1,0 +1,38 @@
+name: Update volumes daily
+
+on:
+  schedule:
+    # 22:00 New York time = 02:00 UTC next day
+    - cron:  '0 2 * * *'
+  workflow_dispatch:      # lets you run it on demand
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run agent
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python agent.py
+
+      - name: Commit & push results
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add daily_volumes.csv
+          git commit -m "data: update volumes $(date -u +'%Y-%m-%d')" || echo "No changes"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        # The checkout action already sets up the token for push

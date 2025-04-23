@@ -1,10 +1,12 @@
 name: Collect daily market volumes
 
+# 1️⃣ give the workflow write access so the default token can push commits
+permissions:
+  contents: write
+
 on:
-  # Runs every day at 02:00 UTC ≈ 22:00 ET (previous trading day is settled)
   schedule:
-    - cron: '0 2 * * *'
-  # Allows you to trigger the job manually from the Actions tab
+    - cron: '0 2 * * *'      # 02:00 UTC ≈ 22:00 ET
   workflow_dispatch:
 
 jobs:
@@ -12,35 +14,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1 Checkout repo (the PAT in GH_TOKEN gives push-back permission)
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_TOKEN }}
+      # Checkout with the default GITHUB_TOKEN (no explicit token needed)
+      - uses: actions/checkout@v4
 
-      # 2 Set up Python 3.12 (pin to a stable version)
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # 3 Install dependencies
       - name: Install Python dependencies
-        run: pip install --upgrade pip && pip install -r requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-      # 4 Run the agent script
       - name: Run volume-collector
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: python agent.py
 
-      # 5 Commit and push the updated CSV (if it changed)
-      - name: Commit & push results
+      - name: Commit & push updated CSV
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add daily_volumes.csv
           git commit -m "data: update volumes $(date -u +'%Y-%m-%d')" || echo "Nothing to commit"
           git push
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -12750,3 +12750,8 @@ date,asset_type,symbol,volume
 2025-11-03,option,AAPL,0
 2025-11-03,option,TSLA,0
 2025-11-03,option,QQQ,0
+2025-11-04,equity_market,TOTAL_US,0
+2025-11-04,option,SPY,0
+2025-11-04,option,AAPL,0
+2025-11-04,option,TSLA,0
+2025-11-04,option,QQQ,0

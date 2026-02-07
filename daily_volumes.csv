@@ -13190,3 +13190,8 @@ date,asset_type,symbol,volume
 2026-02-05,option,AAPL,0
 2026-02-05,option,TSLA,0
 2026-02-05,option,QQQ,0
+2026-02-06,equity_market,TOTAL_US,0
+2026-02-06,option,SPY,0
+2026-02-06,option,AAPL,0
+2026-02-06,option,TSLA,0
+2026-02-06,option,QQQ,0

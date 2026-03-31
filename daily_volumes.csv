@@ -13434,3 +13434,8 @@ date,asset_type,symbol,volume
 2026-03-27,option,AAPL,0
 2026-03-27,option,TSLA,0
 2026-03-27,option,QQQ,0
+2026-03-30,equity_market,TOTAL_US,19150335687.39208
+2026-03-30,option,SPY,0.0
+2026-03-30,option,AAPL,0.0
+2026-03-30,option,TSLA,0.0
+2026-03-30,option,QQQ,0.0
